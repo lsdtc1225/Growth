@@ -1,4 +1,4 @@
-package com.pinpointgrowth.viewcourse;
+package com.pinpointgrowth.traditional;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -20,22 +20,22 @@ import com.pinpointgrowth.beans.CourseBean;
 import com.pinpointgrowth.beans.LoginBean;
 import com.pinpointgrowth.constants.Constants;
 
-public class ViewCourse extends HttpServlet {
+/**
+ * Servlet implementation class PickTestMethod
+ */
 
-    /**
-     * 
-     */
-    private static final long serialVersionUID = -7673528038242907485L;
+public class PickTestMethod extends HttpServlet {
+
+    private static final long serialVersionUID = 1L;
+
     private String userName;
-
+    
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        System.out.println("success");
         int courseID = Integer.parseInt(request.getParameter("cID"));
-
+        
         LoginBean loginBean = (LoginBean) request.getSession().getAttribute("loginInfo");
         userName = loginBean.getUsername();
-
         try {
             CourseDTO courseDTO = setupCourseDTO(courseID);
             CourseBean courseBean = new CourseBean();
@@ -45,13 +45,13 @@ public class ViewCourse extends HttpServlet {
             ExceptionUtils.printRootCauseStackTrace(e);
         }
 
-        String nextJSP = "/viewCourse.jsp";
+        String nextJSP = "/pickTestMethod.jsp";
         RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(nextJSP);
         dispatcher.forward(request, response);
-
     }
 
     private CourseDTO setupCourseDTO(int courseID) throws SQLException, ClassNotFoundException {
+        
         CourseDTO courseDTO = new CourseDTO();
         Class.forName(Constants.JDBC_DRIVER_CLASS);
         Connection con = DriverManager.getConnection(Constants.DATABASE_URL, Constants.DATABASE_USERNAME, Constants.DATABASE_PASSWORD);

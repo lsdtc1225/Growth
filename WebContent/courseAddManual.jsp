@@ -35,7 +35,6 @@
                 <jsp:setProperty name="sessionAddCourseManualBean" property="numberOfStudents" value="${addCourseManualBean.numberOfStudents}"/>
             </c:if>
 
-
             <form action="courseAddManual.jsp" method="POST">
                 <input type="hidden" name ="numberofStudentsSubmitted" value="true" />
                 Course Name: <input type="text" name="courseName" value="<c:out value="${addCourseManualBean.courseName}" />" />

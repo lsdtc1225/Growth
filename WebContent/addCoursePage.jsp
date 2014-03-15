@@ -2,9 +2,10 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <html>
-    <title>Add Course</title>
+    
     <head>
         <link rel="stylesheet" type="text/css" href="style.css">
+        <title>Add Course</title>
     </head>
 
     <body>

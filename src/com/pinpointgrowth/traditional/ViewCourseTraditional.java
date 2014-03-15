@@ -1,4 +1,4 @@
-package com.pinpointgrowth.viewcourse;
+package com.pinpointgrowth.traditional;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -20,22 +20,21 @@ import com.pinpointgrowth.beans.CourseBean;
 import com.pinpointgrowth.beans.LoginBean;
 import com.pinpointgrowth.constants.Constants;
 
-public class ViewCourse extends HttpServlet {
+/**
+ * Servlet implementation class ViewCourseTraditional
+ */
 
-    /**
-     * 
-     */
-    private static final long serialVersionUID = -7673528038242907485L;
-    private String userName;
+public class ViewCourseTraditional extends HttpServlet {
+	private static final long serialVersionUID = 1L;
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-        System.out.println("success");
+	private String userName;
+	
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
         int courseID = Integer.parseInt(request.getParameter("cID"));
 
         LoginBean loginBean = (LoginBean) request.getSession().getAttribute("loginInfo");
         userName = loginBean.getUsername();
-
         try {
             CourseDTO courseDTO = setupCourseDTO(courseID);
             CourseBean courseBean = new CourseBean();
@@ -45,13 +44,14 @@ public class ViewCourse extends HttpServlet {
             ExceptionUtils.printRootCauseStackTrace(e);
         }
 
-        String nextJSP = "/viewCourse.jsp";
+        String nextJSP = "/traditionalHomePage.jsp";
         RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(nextJSP);
         dispatcher.forward(request, response);
-
-    }
+	    
+	}
 
     private CourseDTO setupCourseDTO(int courseID) throws SQLException, ClassNotFoundException {
+        
         CourseDTO courseDTO = new CourseDTO();
         Class.forName(Constants.JDBC_DRIVER_CLASS);
         Connection con = DriverManager.getConnection(Constants.DATABASE_URL, Constants.DATABASE_USERNAME, Constants.DATABASE_PASSWORD);
@@ -74,10 +74,11 @@ public class ViewCourse extends HttpServlet {
     }
 
     private int getTeacherID(Statement statement) throws SQLException {
-        ResultSet resultSet = statement.executeQuery(Constants.TEACHER_ID_QUERY(userName));
+    	ResultSet resultSet = statement.executeQuery(Constants.TEACHER_ID_QUERY(userName));
         resultSet.first();
         int column = resultSet.findColumn("T_ID");
         int teacherID = resultSet.getInt(column);
         return teacherID;
     }
+
 }

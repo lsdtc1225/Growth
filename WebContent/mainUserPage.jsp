@@ -30,7 +30,10 @@
         </div>
         
         <c:forEach var="courseDTO" items="${courseDisplayBean.courseNames}" varStatus="rowCounter">
-            <h3><a href="ViewCourse?cID=<c:out value="${courseDTO.courseID}" /> ">${courseDTO.courseName}</a></h3>
+
+            <h3><a href="PickTestMethod?cID=<c:out value="${courseDTO.courseID}" /> ">${courseDTO.courseName}</a></h3>
+           
+ 
         </c:forEach>
         
         <div>

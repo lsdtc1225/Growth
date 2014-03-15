@@ -43,6 +43,8 @@ public class CourseAddManual extends HttpServlet {
         for (int i = 1; i < ((Integer.parseInt(addCourseManualBean
                 .getNumberOfStudents()) + 1)); i++) {
             StudentDataRecord record = new StudentDataRecord();
+
+
             record.setStudentFirstName(request
                     .getParameter("studentFirstName_" + i)
                     .replace("" + '"', "").replace(";", ""));

@@ -12,7 +12,7 @@ public class CourseDTO {
     private int teacherID;
     private int courseID;
     private String term;
-    private String ;
+    private String courseName;
     private String courseLength;
     private String locked;
 

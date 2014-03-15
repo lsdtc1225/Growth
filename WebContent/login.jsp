@@ -14,4 +14,3 @@
         <jsp:forward page="frontPage.jsp" />
     </c:otherwise>
 </c:choose>
-

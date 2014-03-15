@@ -55,6 +55,7 @@
                     <br>
                     <input type="submit" value="Next" /><br>
                 </c:if>
+                
             </form>
             <c:if test="${param.numberofSLOSubmitted}">
                 <c:choose>

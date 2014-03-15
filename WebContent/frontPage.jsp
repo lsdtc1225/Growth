@@ -19,6 +19,7 @@
     
         <div id = "frontForm">
             <form action="login.jsp" method="post">
+               
                 Username: <input type="text" name="username" value="<c:out value="${loginBean.username}"/>" /> 
                 <br> 
                 Password: <input type="password" name="password" /> 
