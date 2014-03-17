@@ -1,4 +1,4 @@
-package com.pinpointgrowth.traditional;
+package com.pinpointgrowth.traditionalServlet;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -9,6 +9,7 @@ import java.sql.Statement;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -21,17 +22,16 @@ import com.pinpointgrowth.beans.LoginBean;
 import com.pinpointgrowth.constants.Constants;
 
 /**
- * Servlet implementation class PickTestMethod
+ * Servlet implementation class ViewCourseTraditional
  */
+@WebServlet(urlPatterns = { "/ViewCourseTraditional" })
+public class ViewCourseTraditional extends HttpServlet {
+	private static final long serialVersionUID = 1L;
 
-public class PickTestMethod extends HttpServlet {
-
-    private static final long serialVersionUID = 1L;
-
-    private String userName;
-    
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+	private String userName;
+	
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
         int courseID = Integer.parseInt(request.getParameter("cID"));
         
         LoginBean loginBean = (LoginBean) request.getSession().getAttribute("loginInfo");
@@ -44,11 +44,12 @@ public class PickTestMethod extends HttpServlet {
         } catch (Exception e) {
             ExceptionUtils.printRootCauseStackTrace(e);
         }
-
-        String nextJSP = "/pickTestMethod.jsp";
+        
+        String nextJSP = "/traditionalHomePage.jsp";
         RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(nextJSP);
         dispatcher.forward(request, response);
-    }
+	    
+	}
 
     private CourseDTO setupCourseDTO(int courseID) throws SQLException, ClassNotFoundException {
         
@@ -74,10 +75,11 @@ public class PickTestMethod extends HttpServlet {
     }
 
     private int getTeacherID(Statement statement) throws SQLException {
-        ResultSet resultSet = statement.executeQuery(Constants.TEACHER_ID_QUERY(userName));
+    	ResultSet resultSet = statement.executeQuery(Constants.TEACHER_ID_QUERY(userName));
         resultSet.first();
         int column = resultSet.findColumn("T_ID");
         int teacherID = resultSet.getInt(column);
         return teacherID;
     }
+
 }

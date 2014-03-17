@@ -30,7 +30,6 @@ public class ViewCourse extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        System.out.println("success");
         int courseID = Integer.parseInt(request.getParameter("cID"));
 
         LoginBean loginBean = (LoginBean) request.getSession().getAttribute("loginInfo");

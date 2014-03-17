@@ -14,7 +14,7 @@
 
     <head>
         <link rel="stylesheet" type="text/css" href="style.css" />
-        <title>Pre-Test Setup</title>
+        <title>Post-Test Setup</title>
     </head>
 
     <body>
@@ -23,16 +23,16 @@
         </div>
 
         <div id = "frontForm">
-            <h3>PRE-TEST SET UP</h3>
+            <h3>POST-TEST SET UP</h3>
             <a href = "mainUserPage.jsp">Go Back to Courses</a>
         </div>
 
         <div id="form">
             <h2>Enter Students' Scores</h2>
-            <form action="PreTestScore" method="post">
+            <form action="PostTestScore" method="post">
                 <table border="1">
                     <tr>
-                        <th>Student FirstName</th> <th>Student LastName</th> <th>pre-Test Score(0-100)</th>
+                        <th>Student FirstName</th> <th>Student LastName</th> <th>post-Test Score(0-100)</th>
                     </tr>
                     <c:forEach var="row" items="${resultSet.rows}">
                         <tr>

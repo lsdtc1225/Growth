@@ -175,20 +175,4 @@
     <servlet-name>ExtensionMetSave</servlet-name>
     <url-pattern>/ExtensionMetSave</url-pattern>
   </servlet-mapping>
-  <servlet>
-    <servlet-name>PickTestMethod</servlet-name>
-    <servlet-class>com.pinpointgrowth.traditional.PickTestMethod</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>PickTestMethod</servlet-name>
-    <url-pattern>/PickTestMethod</url-pattern>
-  </servlet-mapping>
-  <servlet>
-    <servlet-name>ViewCourseTraditional</servlet-name>
-    <servlet-class>com.pinpointgrowth.traditional.ViewCourseTraditional</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>ViewCourseTraditional</servlet-name>
-    <url-pattern>/ViewCourseTraditional</url-pattern>
-  </servlet-mapping>
 </web-app>
