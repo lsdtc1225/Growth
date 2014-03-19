@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="sql" uri="http://java.sun.com/jsp/jstl/sql" %>
+<%@ page import="com.pinpointgrowth.constants.Constants" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 
 <jsp:useBean id="preTestSetupBean" scope="session" class="com.pinpointgrowth.traditionalBeans.PreTestSetupBean">
@@ -7,6 +10,13 @@
 </jsp:useBean>
 <jsp:setProperty name="preTestSetupBean" property="cID" value="${param.cID}"/>
 <jsp:setProperty name="preTestSetupBean" property="cName" value="${param.cName}"/>
+
+<sql:setDataSource var="testRecord" driver="<%=Constants.JDBC_DRIVER_CLASS%>" url="<%=Constants.DATABASE_URL%>" user="<%=Constants.DATABASE_USERNAME%>"  password="<%=Constants.DATABASE_PASSWORD%>"/>
+
+<sql:query dataSource="${testRecord}" var="preTestResultSet"> SELECT * FROM Pinpoint.PreTest WHERE C_ID = <c:out value="${preTestSetupBean.cID}"/></sql:query> 
+
+<sql:query dataSource="${testRecord}" var="postTestResultSet"> SELECT * FROM Pinpoint.PostTest WHERE C_ID = <c:out value="${preTestSetupBean.cID}"/></sql:query>
+
 
 <html>
 
@@ -42,13 +52,16 @@
             </h3>
         </div>
         
-        <div>
-            <h3>
-	            <a href = "postTest1.jsp?cID=<c:out value="${param.cID}"/>&cName=<c:out value="${courseBean.courseDTO.courseName}"/>">Setup Post-Test</a>
-	            <br/>
-            </h3>
-        </div>
-
+        <c:if test="${preTestResultSet.rowCount != 0}">
+            <div>
+                <h3>
+                    <a href = "postTest1.jsp?cID=<c:out value="${param.cID}"/>&cName=<c:out value="${courseBean.courseDTO.courseName}"/>">Setup Post-Test</a>
+                    <br/>
+                </h3>
+            </div>
+        </c:if>
+        
+        
 <%--         <c:if test="${preTest.isReady()}">
             <a href="ViewPreTest.jsp">View Pre-test</a>
             <br/>

@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Collections;
+import java.util.Enumeration;
 import java.util.HashMap;
 
 import javax.servlet.RequestDispatcher;
@@ -64,11 +65,12 @@ public class PostTest extends HttpServlet {
         LoginBean loginBean = (LoginBean) request.getSession().getAttribute("loginInfo");
         PreTestSetupBean preTestSetupBean = (PreTestSetupBean) request.getSession().getAttribute("preTestSetupBean");
 
+
         userName = loginBean.getUsername();
         cID = preTestSetupBean.getcID();
         numberOfRange = preTestSetupBean.getNumberOfRange();
 
-        
+
         for(int i = 1; i <= numberOfRange; i++){
             String paramTopScore = request.getParameter("topScore_"+i).replace("" + '"', "").replace(";", "");
             String paramDescription = request.getParameter("description_"+i).replace("" + '"', "").replace(";", "");

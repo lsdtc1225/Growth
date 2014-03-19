@@ -5,11 +5,14 @@
 <%@ page import="com.pinpointgrowth.constants.Constants" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">  
 
-<sql:setDataSource var="studentEnrolled" driver="<%=Constants.JDBC_DRIVER_CLASS%>" url="<%=Constants.DATABASE_URL%>" user="<%=Constants.DATABASE_USERNAME%>"  password="<%=Constants.DATABASE_PASSWORD%>"/>
+<sql:setDataSource var="dbSource" driver="<%=Constants.JDBC_DRIVER_CLASS%>" url="<%=Constants.DATABASE_URL%>" user="<%=Constants.DATABASE_USERNAME%>"  password="<%=Constants.DATABASE_PASSWORD%>"/>
 
-<sql:query dataSource="${studentEnrolled}" var="resultSet"> SELECT * FROM Pinpoint.PreTest WHERE C_ID = <c:out value="${preTestSetupBean.cID}"/>
-</sql:query> 
+<sql:query dataSource="${dbSource}" var="resultSet"> SELECT * FROM Pinpoint.PreTest WHERE C_ID = <c:out value="${preTestSetupBean.cID}"/></sql:query>
 
+<sql:query dataSource="${dbSource}" var="preTestResultSet"> SELECT * FROM Pinpoint.PreTest WHERE C_ID = <c:out value="${preTestSetupBean.cID}"/></sql:query> 
+
+
+<jsp:setProperty name="preTestSetupBean" property="numberOfRange" value="${preTestResultSet.rowCount}"/>
 
 <html>
 
