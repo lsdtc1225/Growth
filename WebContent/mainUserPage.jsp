@@ -6,10 +6,9 @@
 <jsp:setProperty property="userName" name="courseDisplayBean" value="${loginInfo.username}" />
 
 <html>
-    <title>Welcome, <c:out value="${loginInfo.username}" />!</title>
-
     <head>
         <link rel="stylesheet" type="text/css" href="style.css">
+        <title>Welcome, <c:out value="${loginInfo.username}" />!</title>
     </head>
 
     <body>

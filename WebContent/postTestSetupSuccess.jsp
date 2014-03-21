@@ -8,7 +8,7 @@
 <html>
 
     <head>
-        <meta http-equiv="refresh" content="3; url=TraditionalEvaluation"/>
+        <meta http-equiv="refresh" content="1.5; url=TraditionalEvaluation"/>
         <link rel="stylesheet" type="text/css" href="style.css" />
         <title>Post-Test Setup Success !</title>
     </head>
@@ -20,7 +20,7 @@
 
         <div id="form">
                 <h1>Post-Test Record Setup Success !</h1>
-                <h4><font color="red">show evaluation in 3 seconds...</font></h4>
+                <h4><font color="red">Redirecting to Evaluation Page...</font></h4>
         </div>
     </body>
     

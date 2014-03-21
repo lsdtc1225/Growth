@@ -11,7 +11,6 @@
 
 <sql:query dataSource="${dbSource}" var="preTestResultSet"> SELECT * FROM Pinpoint.PreTest WHERE C_ID = <c:out value="${preTestSetupBean.cID}"/></sql:query> 
 
-
 <jsp:setProperty name="preTestSetupBean" property="numberOfRange" value="${preTestResultSet.rowCount}"/>
 
 <html>

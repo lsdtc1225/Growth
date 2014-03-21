@@ -38,23 +38,15 @@ public class CourseAddManual extends HttpServlet {
                 "loginInfo");
         userName = loginBean.getUsername();
 
-        addCourseManualBean = (AddCourseManualBean) request.getSession()
-                .getAttribute("sessionAddCourseManualBean");
+        addCourseManualBean = (AddCourseManualBean) request.getSession().getAttribute("sessionAddCourseManualBean");
         for (int i = 1; i < ((Integer.parseInt(addCourseManualBean
                 .getNumberOfStudents()) + 1)); i++) {
             StudentDataRecord record = new StudentDataRecord();
 
-
-            record.setStudentFirstName(request
-                    .getParameter("studentFirstName_" + i)
-                    .replace("" + '"', "").replace(";", ""));
-            record.setStudentLastName(request
-                    .getParameter("studentLastName_" + i).replace("" + '"', "")
-                    .replace(";", ""));
+            record.setStudentFirstName(request.getParameter("studentFirstName_" + i).replace("" + '"', "").replace(";", ""));
+            record.setStudentLastName(request.getParameter("studentLastName_" + i).replace("" + '"', "").replace(";", ""));
             try {
-                record.setStudentGrade(Integer.parseInt(request
-                        .getParameter("studentGrade_" + i)
-                        .replace("" + '"', "").replace(";", "")));
+                record.setStudentGrade(Integer.parseInt(request.getParameter("studentGrade_" + i).replace("" + '"', "").replace(";", "")));
             } catch (NumberFormatException e) {
                 record.setStudentGrade(0);
             }
@@ -63,7 +55,6 @@ public class CourseAddManual extends HttpServlet {
 
         try {
             saveStudentList();
-
         } catch (Exception e) {
             ExceptionUtils.printRootCauseStackTrace(e);
         }

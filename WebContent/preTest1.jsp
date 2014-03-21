@@ -25,8 +25,12 @@
         <div id = "form">
             <form action = "preTest2.jsp" method = "post">
                 Number of Performance Range (3-5): 
-                <br/>
-                <input type="text" name="numberOfRange" value="<c:out value="${preTestSetupBean.numberOfRange}"/>"/>
+                <select name="numberOfRange">
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                </select>
+                <!-- <input type="text" name="numberOfRange" value="<c:out value="${preTestSetupBean.numberOfRange}"/>"/> -->
                 <br/>
                 <input type="submit" value="next" />
             </form>

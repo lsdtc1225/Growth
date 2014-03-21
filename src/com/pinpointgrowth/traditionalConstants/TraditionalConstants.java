@@ -49,9 +49,29 @@ public class TraditionalConstants {
         return "UPDATE Pinpoint.StudentScore SET PostGradeTrad = " + postTestScore + " WHERE C_ID = " + cID + " AND S_ID = " + sID + ';';
     }
 
-    // used in TraditionalEvaluation.java
+    // used in TraditionalEvaluation.java 
+    // @ setHighestScore()
+    public static String PRE_HIGHEST_SCORE_SQL(int cID){
+        return "SELECT MAX(PreGradeTrad) AS PreHighest FROM Pinpoint.StudentScore WHERE C_ID = " + cID + ';';
+    }
 
+    public static String POST_HIGHEST_SCORE_SQL(int cID){
+        return "SELECT MAX(PostGradeTrad) AS PostHighest FROM Pinpoint.StudentScore WHERE C_ID = " + cID + ';';
+    }
 
+    // @ setCutScore()
+    public static String SET_PRE_CUT_SCORE_SQL(int cID){
+        return "SELECT CutScore FROM Pinpoint.PreTest WHERE C_ID = " + cID + ';';
+    }
+
+    public static String SET_POST_CUT_SCORE_SQL(int cID){
+        return "SELECT CutScore FROM Pinpoint.PostTest WHERE C_ID = " + cID + ';';
+    }
+
+    // @ 
+    public static String STUDENT_NAME_AND_SCORE_SQL(int cID){
+        return "SELECT  SFName, SLName, PreGradeTrad, PostGradeTrad FROM Pinpoint.Student S, Pinpoint.StudentScore SS WHERE SS.S_ID = S.S_ID AND SS.C_ID = " + cID + ';';
+    }
 }
 
 
