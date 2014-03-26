@@ -72,6 +72,43 @@ public class TraditionalConstants {
     public static String STUDENT_NAME_AND_SCORE_SQL(int cID){
         return "SELECT  SFName, SLName, PreGradeTrad, PostGradeTrad FROM Pinpoint.Student S, Pinpoint.StudentScore SS WHERE SS.S_ID = S.S_ID AND SS.C_ID = " + cID + ';';
     }
+
+    //used in CourseDelete.java
+    //@ getTeacherID()
+    public static String GET_TEACHER_ID_SQL(String userName){
+        return "SELECT T_ID FROM Pinpoint.Instructor WHERE Email = " + '"' + userName + '"' + ';';
+    }
+
+    //
+    public static String DELETE_COURSE_IN_CLASS_SQL(int cID){
+        return "DELETE FROM Pinpoint.Classes WHERE C_ID = " + cID + ';';
+    }
+
+    public static String DELETE_COURSE_IN_ENROLLED_SQL(int cID){
+        return "DELETE FROM Pinpoint.Enrolled WHERE C_ID = " + cID + ';';
+    }
+
+    public static String DELETE_COURSE_IN_ASSIGNMENT_SQL(int cID){
+        return "DELETE FROM Pinpoint.Assignment WHERE C_ID = " + cID + ';';
+    }
+
+    public static String DELETE_COURSE_IN_EXTENSIONACTIVITY_SQL(int cID){
+        return "DELETE FROM Pinpoint.ExtensionActivity WHERE C_ID = " + cID + ';';
+    }
+
+    public static String DELETE_COURSE_IN_PRE_TEST_SQL(int cID){
+        return "DELETE FROM Pinpoint.PreTest WHERE C_ID = " + cID + ';';
+    }
+
+    public static String DELETE_COURSE_IN_POST_TEST_SQL(int cID){
+        return "DELETE FROM Pinpoint.PostTest WHERE C_ID = " + cID + ';';
+    }
+
+    public static String DELETE_COURSE_IN_STUDENTSCORE_SQL(int cID){
+        return "DELETE FROM Pinpoint.StudentScore WHERE C_ID = " + cID + ';';
+    }
+
+
 }
 
 
