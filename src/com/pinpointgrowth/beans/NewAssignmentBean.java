@@ -1,10 +1,7 @@
 package com.pinpointgrowth.beans;
 
 public class NewAssignmentBean implements java.io.Serializable {
-
-    /**
-     * 
-     */
+    
     private static final long serialVersionUID = -151075691946065238L;
     private String assignmentName;
     private int rubricID;

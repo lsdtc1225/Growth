@@ -27,8 +27,7 @@ public class LoginBean implements java.io.Serializable {
     private boolean userNamePasswordMatchInDB() throws Exception {
         Class.forName("com.mysql.jdbc.Driver");
         String url = "jdbc:mysql://localhost:3306/Pinpoint";
-        Connection con = DriverManager.getConnection(Constants.DATABASE_URL,
-                Constants.DATABASE_USERNAME, Constants.DATABASE_PASSWORD);
+        Connection con = DriverManager.getConnection(Constants.DATABASE_URL, Constants.DATABASE_USERNAME, Constants.DATABASE_PASSWORD);
         Statement statement = con.createStatement();
 
         String query = "SELECT * FROM Pinpoint.Instructor WHERE Login = " + '"'

@@ -22,5 +22,4 @@
             <a href="mainUserPage.jsp">Back to main page</a>
         </div>
     </body>
-
 </html>

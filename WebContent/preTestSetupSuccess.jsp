@@ -22,8 +22,10 @@
         </div>
 
         <div id="form">
-            <form action="mainUserPage.jsp" method="post">
+            <form action="AfterPreSuccess" method="post">
                 <h1>Pre-Test Record Setup Success !</h1>
+                <input type="hidden" name="cID" value="<c:out value="${preTestSetupBean.cID}"/>"/>
+                <input type="hidden" name="cName" value="<c:out value="${preTestSetupBean.cName}"/>"/>
                 <input type="submit" value="Home"/>
             </form>
         </div>

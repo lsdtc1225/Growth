@@ -8,6 +8,29 @@
         <link rel="stylesheet" type="text/css" href="style.css">
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Add Course</title>
+        <script language="javascript" type="text/javascript">
+            function validate()
+            {
+                var a = document.getElementById("performanceWeight").value;
+                var b = document.getElementById("traditionalWeight").value;
+                if(a.length <= 0 || b.length <=0){
+                    alert("Don't leave the Evaluation Weight Field Empty!");
+                    return false;
+                }
+                else if(isNaN(a) || isNaN(b)){
+                    alert("Enter a Number for Evaluation Weight Field!");
+                    return false;
+                }
+                else if((Number(a)+Number(b))!= 100){
+                    alert("Evaluation Weight Fields Have to be Added Up to 100!") ;
+
+                    return false;
+                }
+                else{
+                    return true;
+                }
+            }
+        </script>
     </head>
 
     <body>
@@ -58,6 +81,14 @@
           
             <c:if test="${param.numberofStudentsSubmitted}">
                 <form action="CourseAddManual" method="POST">
+                    <br/>
+                    <label for="evaluationWeight">Evaluation Weight:</label>
+                    <br/>
+                    Performance:
+                    <input type="text" name="performanceWeight" id="performanceWeight"/>
+                    Traditional:
+                    <input type="text" name="traditionalWeight" id="traditionalWeight"/>
+                    <br/>
                     <table border="1">
                         <tr>
                             <td>First Name</td>
@@ -73,7 +104,7 @@
                         </c:forEach>
                     </table>
                     <br>
-                    <input type="submit" value="Add Course" />
+                    <input type="submit" value="Add Course" onclick="return validate();"/>
                 </form>
             </c:if>
         </div>

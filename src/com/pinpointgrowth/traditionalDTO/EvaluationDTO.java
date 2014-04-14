@@ -6,6 +6,15 @@ public class EvaluationDTO {
     private int preTestScore;
     private int postTestScore;
     private boolean passed;
+    private boolean performancePassed;
+
+    public boolean isPerformancePassed() {
+        return performancePassed;
+    }
+
+    public void setPerformancePassed(boolean performancePassed) {
+        this.performancePassed = performancePassed;
+    }
 
     public String getSFName() {
         return SFName;

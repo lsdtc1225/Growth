@@ -19,12 +19,9 @@ public class CourseDTO {
     public boolean getLocked() throws ClassNotFoundException, SQLException {
         if (locked == null) {
             Class.forName(Constants.JDBC_DRIVER_CLASS);
-            Connection con = DriverManager.getConnection(
-                    Constants.DATABASE_URL, Constants.DATABASE_USERNAME,
-                    Constants.DATABASE_PASSWORD);
+            Connection con = DriverManager.getConnection(Constants.DATABASE_URL, Constants.DATABASE_USERNAME, Constants.DATABASE_PASSWORD);
             Statement statement = con.createStatement();
-            ResultSet course = statement.executeQuery(Constants
-                    .GET_COURSE(courseID));
+            ResultSet course = statement.executeQuery(Constants.GET_COURSE(courseID));
             course.first();
             locked = course.getString(course.findColumn("Locked")).trim();
             statement.close();

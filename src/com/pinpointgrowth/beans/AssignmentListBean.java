@@ -13,47 +13,36 @@ import com.pinpointgrowth.constants.Constants;
 
 public class AssignmentListBean implements java.io.Serializable {
 
-    /**
-     * 
-     */
     private static final long serialVersionUID = 2865379971056002968L;
     private List<AssignmentDTO> assignmentList;
     private int courseID;
     private String postScore;
 
-    public List<AssignmentDTO> getAssignmentList() throws SQLException,
-            ClassNotFoundException {
+    public List<AssignmentDTO> getAssignmentList() throws SQLException, ClassNotFoundException {
         if (assignmentList == null) {
             assignmentList = new ArrayList<AssignmentDTO>();
             Class.forName(Constants.JDBC_DRIVER_CLASS);
-            Connection con = DriverManager.getConnection(
-                    Constants.DATABASE_URL, Constants.DATABASE_USERNAME,
-                    Constants.DATABASE_PASSWORD);
+            Connection con = DriverManager.getConnection(Constants.DATABASE_URL, Constants.DATABASE_USERNAME, Constants.DATABASE_PASSWORD);
             Statement statement = con.createStatement();
-            ResultSet results = statement.executeQuery(Constants
-                    .GET_ALL_ASSIGNMENTS_FOR_COURSE(courseID));
+            ResultSet results = statement.executeQuery(Constants.GET_ALL_ASSIGNMENTS_FOR_COURSE(courseID));
             while (results.next()) {
                 AssignmentDTO assignmentDTO = new AssignmentDTO();
                 int a_id = results.getInt(results.findColumn("A_ID"));
                 int r_id = results.getInt(results.findColumn("R_ID"));
-                String assignmentName = results.getString(results
-                        .findColumn("AName"));
+                String assignmentName = results.getString(results.findColumn("AName"));
                 assignmentDTO.setAssignmentID(a_id);
                 assignmentDTO.setAssignmentName(assignmentName);
                 assignmentDTO.setCourseID(courseID);
                 assignmentDTO.setRubricID(r_id);
                 Statement statement2 = con.createStatement();
-                ResultSet rubric = statement2.executeQuery(Constants
-                        .GET_RUBRIC(r_id));
+                ResultSet rubric = statement2.executeQuery(Constants.GET_RUBRIC(r_id));
                 rubric.first();
-                String rubricPostScore = rubric.getString(rubric
-                        .findColumn("PostScore"));
+                String rubricPostScore = rubric.getString(rubric.findColumn("PostScore"));
                 // only add if postScore == 'N' for prescore
                 // and if postScore == 'Y' for postscore
                 if (postScore.equals(rubricPostScore)) {
                     assignmentList.add(assignmentDTO);
                 }
-
             }
         }
         return assignmentList;

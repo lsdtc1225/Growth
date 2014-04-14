@@ -21,33 +21,16 @@ import com.pinpointgrowth.beans.LoginBean;
 import com.pinpointgrowth.constants.Constants;
 
 public class ViewCourse extends HttpServlet {
-
-    /**
-     * 
-     */
+    
     private static final long serialVersionUID = -7673528038242907485L;
     private String userName;
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-        int courseID = Integer.parseInt(request.getParameter("cID"));
-
-        LoginBean loginBean = (LoginBean) request.getSession().getAttribute("loginInfo");
-        userName = loginBean.getUsername();
-
-        try {
-            CourseDTO courseDTO = setupCourseDTO(courseID);
-            CourseBean courseBean = new CourseBean();
-            courseBean.setCourseDTO(courseDTO);
-            request.setAttribute("courseBean", courseBean);
-        } catch (Exception e) {
-            ExceptionUtils.printRootCauseStackTrace(e);
-        }
-
-        String nextJSP = "/viewCourse.jsp";
-        RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(nextJSP);
-        dispatcher.forward(request, response);
-
+    private int getTeacherID(Statement statement) throws SQLException {
+        ResultSet resultSet = statement.executeQuery(Constants.TEACHER_ID_QUERY(userName));
+        resultSet.first();
+        int column = resultSet.findColumn("T_ID");
+        int teacherID = resultSet.getInt(column);
+        return teacherID;
     }
 
     private CourseDTO setupCourseDTO(int courseID) throws SQLException, ClassNotFoundException {
@@ -72,11 +55,22 @@ public class ViewCourse extends HttpServlet {
         return courseDTO;
     }
 
-    private int getTeacherID(Statement statement) throws SQLException {
-        ResultSet resultSet = statement.executeQuery(Constants.TEACHER_ID_QUERY(userName));
-        resultSet.first();
-        int column = resultSet.findColumn("T_ID");
-        int teacherID = resultSet.getInt(column);
-        return teacherID;
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        int courseID = Integer.parseInt(request.getParameter("cID"));
+        LoginBean loginBean = (LoginBean) request.getSession().getAttribute("loginInfo");
+        userName = loginBean.getUsername();
+
+        try {
+            CourseDTO courseDTO = setupCourseDTO(courseID);
+            CourseBean courseBean = new CourseBean();
+            courseBean.setCourseDTO(courseDTO);
+            request.setAttribute("courseBean", courseBean);
+        } catch (Exception e) {
+            ExceptionUtils.printRootCauseStackTrace(e);
+        }
+
+        String nextJSP = "/viewCourse.jsp";
+        RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(nextJSP);
+        dispatcher.forward(request, response);
     }
 }

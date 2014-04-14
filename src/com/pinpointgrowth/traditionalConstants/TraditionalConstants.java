@@ -70,7 +70,7 @@ public class TraditionalConstants {
 
     // @ 
     public static String STUDENT_NAME_AND_SCORE_SQL(int cID){
-        return "SELECT  SFName, SLName, PreGradeTrad, PostGradeTrad FROM Pinpoint.Student S, Pinpoint.StudentScore SS WHERE SS.S_ID = S.S_ID AND SS.C_ID = " + cID + ';';
+        return "SELECT  S.S_ID, SFName, SLName, PreGradeTrad, PostGradeTrad FROM Pinpoint.Student S, Pinpoint.StudentScore SS WHERE SS.S_ID = S.S_ID AND SS.C_ID = " + cID + ';';
     }
 
     //used in CourseDelete.java
@@ -79,7 +79,12 @@ public class TraditionalConstants {
         return "SELECT T_ID FROM Pinpoint.Instructor WHERE Email = " + '"' + userName + '"' + ';';
     }
 
-    //
+    //@getSidList()
+    public static String GET_STUDENT_ID_SQL(int cID){
+        return "SELECT S_ID FROM Pinpoint.Enrolled WHERE C_ID = " + cID + ';';
+    }
+    
+    //@ deleteCourse()
     public static String DELETE_COURSE_IN_CLASS_SQL(int cID){
         return "DELETE FROM Pinpoint.Classes WHERE C_ID = " + cID + ';';
     }
@@ -108,6 +113,16 @@ public class TraditionalConstants {
         return "DELETE FROM Pinpoint.StudentScore WHERE C_ID = " + cID + ';';
     }
 
+    public static String DELETE_COURSE_IN_WEIGHT_SQL(int cID){
+        return "DELETE FROM Pinpoint.Weight WHERE C_ID = " + cID + ';';
+    }
+
+
+    //used in TraditionalEvaluation.java
+    //@setWeight
+    public static String GET_WEIGHT_SQL(int cID){
+        return "SELECT * FROM Pinpoint.Weight WHERE C_ID = " + cID + ';';
+    }
 
 }
 

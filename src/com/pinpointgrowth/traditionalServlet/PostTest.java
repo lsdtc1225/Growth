@@ -34,18 +34,27 @@ public class PostTest extends HttpServlet {
     private int numberOfRange;
     private HashMap<Integer, String> scoreDescriptionMap = new HashMap<Integer, String>();
 
-    private boolean recordExist(Statement statement) throws SQLException {
+    private boolean recordExist() throws ClassNotFoundException, SQLException {
+        Class.forName(Constants.JDBC_DRIVER_CLASS);
+        Connection connection = DriverManager.getConnection(Constants.DATABASE_URL, Constants.DATABASE_USERNAME, Constants.DATABASE_PASSWORD);
+        Statement statement = connection.createStatement();
+
         String checkSetupForPostTestSQL = TraditionalConstants.CHECK_SETUP_FOR_POST_TEST_SQL(cID);
         ResultSet resultSet = statement.executeQuery(checkSetupForPostTestSQL);
-        return resultSet.first();
+        Boolean result = resultSet.first();
+
+        connection.close();
+        statement.close();
+        resultSet.close();
+        return result;
     }
 
     private void savePostTestRecord() throws ClassNotFoundException, SQLException {
         Class.forName(Constants.JDBC_DRIVER_CLASS);
-        Connection con = DriverManager.getConnection(Constants.DATABASE_URL, Constants.DATABASE_USERNAME, Constants.DATABASE_PASSWORD);
-        Statement statement = con.createStatement();
+        Connection connection = DriverManager.getConnection(Constants.DATABASE_URL, Constants.DATABASE_USERNAME, Constants.DATABASE_PASSWORD);
+        Statement statement = connection.createStatement();
 
-        if(recordExist(statement)){
+        if(recordExist()){
             String deleteSetupForPostTestSQL = TraditionalConstants.DELETE_SETUP_FOR_POST_TEST_SQL(cID);
             statement.executeUpdate(deleteSetupForPostTestSQL);
         }
@@ -58,6 +67,9 @@ public class PostTest extends HttpServlet {
                 scoreDescriptionMap.remove(min);
             }
         }
+
+        connection.close();
+        statement.close();
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -70,7 +82,6 @@ public class PostTest extends HttpServlet {
         cID = preTestSetupBean.getcID();
         numberOfRange = preTestSetupBean.getNumberOfRange();
 
-
         for(int i = 1; i <= numberOfRange; i++){
             String paramTopScore = request.getParameter("topScore_"+i).replace("" + '"', "").replace(";", "");
             String paramDescription = request.getParameter("description_"+i).replace("" + '"', "").replace(";", "");
@@ -78,6 +89,7 @@ public class PostTest extends HttpServlet {
         }
 
         try {
+
             savePostTestRecord();
         }
         catch (ClassNotFoundException e) {
@@ -85,7 +97,7 @@ public class PostTest extends HttpServlet {
         }
         catch (SQLException e) {
             e.printStackTrace();
-        }
+        } 
         
         String nextJSP = "/postTest3.jsp";
         RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(nextJSP);

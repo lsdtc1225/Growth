@@ -55,7 +55,7 @@
         <c:if test="${preTestResultSet.rowCount != 0}">
             <div>
                 <h3>
-                    <a href = "postTest1.jsp?cID=<c:out value="${param.cID}"/>&cName=<c:out value="${courseBean.courseDTO.courseName}"/>">Setup Post-Test</a>
+                    <a href = "postTest2.jsp?cID=<c:out value="${param.cID}"/>&cName=<c:out value="${courseBean.courseDTO.courseName}"/>">Setup Post-Test</a>
                     <br/>
                 </h3>
             </div>

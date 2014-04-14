@@ -30,23 +30,10 @@
                     <option value="4">4</option>
                     <option value="5">5</option>
                 </select>
-                <!-- <input type="text" name="numberOfRange" value="<c:out value="${preTestSetupBean.numberOfRange}"/>"/> -->
                 <br/>
                 <input type="submit" value="next" />
             </form>
         </div>
 
-
-
-<!--         <div id = "form">
-            <h3>PreTest</h3>
-            <form action="preTest2.jsp" method="post">
-                <input type="hidden" name="TestSubmitted" value="true" />
-                Name for this test: <input type="text" name="testName" value="Pre-test 1" />
-                <br/>
-                <input type="submit" value="Next" />
-                <br/>
-            </form>
-        </div> -->
     </body>
 </html>

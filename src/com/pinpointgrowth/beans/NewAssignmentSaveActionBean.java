@@ -9,9 +9,6 @@ import com.pinpointgrowth.constants.Constants;
 
 public class NewAssignmentSaveActionBean implements java.io.Serializable {
 
-    /**
-     * 
-     */
     private static final long serialVersionUID = 8685326053815203440L;
     private String assignmentName;
     private int rubricID;
@@ -33,19 +30,14 @@ public class NewAssignmentSaveActionBean implements java.io.Serializable {
         this.rubricID = rubricID;
     }
 
-    public boolean saveNewAssignmentData() throws SQLException,
-            ClassNotFoundException {
+    public boolean saveNewAssignmentData() throws SQLException, ClassNotFoundException {
         Class.forName(Constants.JDBC_DRIVER_CLASS);
-        Connection con = DriverManager.getConnection(Constants.DATABASE_URL,
-                Constants.DATABASE_USERNAME, Constants.DATABASE_PASSWORD);
+        Connection con = DriverManager.getConnection(Constants.DATABASE_URL, Constants.DATABASE_USERNAME, Constants.DATABASE_PASSWORD);
         Statement statement = con.createStatement();
-        statement.executeUpdate(Constants.ADD_ASSIGNMENT(assignmentName,
-                rubricID, courseID));
-
+        statement.executeUpdate(Constants.ADD_ASSIGNMENT(assignmentName, rubricID, courseID));
         statement.close();
         con.close();
         return true;
-
     }
 
     public int getCourseID() {

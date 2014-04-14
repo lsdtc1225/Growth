@@ -32,11 +32,14 @@ public class PostTestScore extends HttpServlet {
 
     private void savePostTestRecord() throws ClassNotFoundException, SQLException {
         Class.forName(Constants.JDBC_DRIVER_CLASS);
-        Connection con = DriverManager.getConnection(Constants.DATABASE_URL, Constants.DATABASE_USERNAME, Constants.DATABASE_PASSWORD);
-        Statement statement = con.createStatement();
+        Connection connection = DriverManager.getConnection(Constants.DATABASE_URL, Constants.DATABASE_USERNAME, Constants.DATABASE_PASSWORD);
+        Statement statement = connection.createStatement();
 
         String updatePostTestScoreSQL = TraditionalConstants.UPDATE_POST_TEST_SCORE_SQL(cID, sID, postTestScore);
         statement.executeUpdate(updatePostTestScoreSQL);
+
+        connection.close();
+        statement.close();
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -60,6 +63,7 @@ public class PostTestScore extends HttpServlet {
             }
             
             try {
+
                 savePostTestRecord();
             }
             catch (ClassNotFoundException e) {

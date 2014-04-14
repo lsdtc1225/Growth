@@ -31,12 +31,51 @@ public class PickTestMethod extends HttpServlet {
 
     private String userName;
     
+    private int getTeacherID() throws SQLException, ClassNotFoundException {
+        Class.forName(Constants.JDBC_DRIVER_CLASS);
+        Connection connection = DriverManager.getConnection(Constants.DATABASE_URL, Constants.DATABASE_USERNAME, Constants.DATABASE_PASSWORD);
+        Statement statement  = connection.createStatement();
+        ResultSet resultSet = statement.executeQuery(Constants.TEACHER_ID_QUERY(userName));
+        resultSet.first();
+        int teacherID = resultSet.getInt(resultSet.findColumn("T_ID"));
+        connection.close();
+        statement.close();
+        resultSet.close();
+        return teacherID;
+    }
+    
+    private CourseDTO setupCourseDTO(int courseID) throws SQLException, ClassNotFoundException {
+            
+        Class.forName(Constants.JDBC_DRIVER_CLASS);
+        Connection connection = DriverManager.getConnection(Constants.DATABASE_URL, Constants.DATABASE_USERNAME, Constants.DATABASE_PASSWORD);
+        Statement statement  = connection.createStatement();
+
+        CourseDTO courseDTO = new CourseDTO();
+        int teacherID = getTeacherID();
+        ResultSet resultSet = statement.executeQuery(Constants.GET_COURSE(courseID));
+        resultSet.first();
+        String courseName = resultSet.getString(resultSet.findColumn("CName"));
+        String courseLength = resultSet.getString(resultSet.findColumn("CourseLength"));
+        String courseTerm = resultSet.getString(resultSet.findColumn("Term"));
+        courseDTO.setCourseID(courseID);
+        courseDTO.setCourseLength(courseLength);
+        courseDTO.setTeacherID(teacherID);
+        courseDTO.setTerm(courseTerm);
+        courseDTO.setCourseName(courseName);
+
+        connection.close();
+        statement.close();
+        resultSet.close();
+        return courseDTO;
+    }
+    
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         int courseID = Integer.parseInt(request.getParameter("cID"));
         
         LoginBean loginBean = (LoginBean) request.getSession().getAttribute("loginInfo");
         userName = loginBean.getUsername();
+
         try {
             CourseDTO courseDTO = setupCourseDTO(courseID);
             CourseBean courseBean = new CourseBean();
@@ -49,36 +88,5 @@ public class PickTestMethod extends HttpServlet {
         String nextJSP = "/pickTestMethod.jsp";
         RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(nextJSP);
         dispatcher.forward(request, response);
-    }
-
-    private CourseDTO setupCourseDTO(int courseID) throws SQLException, ClassNotFoundException {
-        
-        CourseDTO courseDTO = new CourseDTO();
-        Class.forName(Constants.JDBC_DRIVER_CLASS);
-        Connection con = DriverManager.getConnection(Constants.DATABASE_URL, Constants.DATABASE_USERNAME, Constants.DATABASE_PASSWORD);
-        Statement statement = con.createStatement();
-        int teacherID = getTeacherID(statement);
-        ResultSet results = statement.executeQuery(Constants.GET_COURSE(courseID));
-        results.first();
-        String courseName = results.getString(results.findColumn("CName"));
-        String courseLength = results.getString(results.findColumn("CourseLength"));
-        String courseTerm = results.getString(results.findColumn("Term"));
-        courseDTO.setCourseID(courseID);
-        courseDTO.setCourseLength(courseLength);
-        courseDTO.setTeacherID(teacherID);
-        courseDTO.setTerm(courseTerm);
-        courseDTO.setCourseName(courseName);
-
-        statement.close();
-        con.close();
-        return courseDTO;
-    }
-
-    private int getTeacherID(Statement statement) throws SQLException {
-        ResultSet resultSet = statement.executeQuery(Constants.TEACHER_ID_QUERY(userName));
-        resultSet.first();
-        int column = resultSet.findColumn("T_ID");
-        int teacherID = resultSet.getInt(column);
-        return teacherID;
     }
 }

@@ -22,13 +22,12 @@ import com.pinpointgrowth.beans.LoginBean;
 import com.pinpointgrowth.constants.Constants;
 
 /**
- * Servlet implementation class ViewCourseTraditional
+ * Servlet implementation class AfterPreSuccess
  */
-@WebServlet(urlPatterns = { "/ViewCourseTraditional" })
-public class ViewCourseTraditional extends HttpServlet {
-
-	private static final long serialVersionUID = 1L;
-	private String userName;
+@WebServlet(urlPatterns ={ "/AfterPreSuccess" })
+public class AfterPreSuccess extends HttpServlet {
+    private static final long serialVersionUID = 1L;
+    private String userName;
     
     private int getTeacherID() throws SQLException, ClassNotFoundException {
         Class.forName(Constants.JDBC_DRIVER_CLASS);
@@ -69,27 +68,24 @@ public class ViewCourseTraditional extends HttpServlet {
         return courseDTO;
     }
 
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         int cID = Integer.parseInt(request.getParameter("cID"));
         LoginBean loginBean = (LoginBean) request.getSession().getAttribute("loginInfo");
         userName = loginBean.getUsername();
-        try {
 
+        try{
             CourseDTO courseDTO = setupCourseDTO(cID);
             CourseBean courseBean = new CourseBean();
             courseBean.setCourseDTO(courseDTO);
             request.setAttribute("courseBean", courseBean);
-        } catch (Exception e) {
+        }catch(Exception e){
             ExceptionUtils.printRootCauseStackTrace(e);
         }
-        
+
         String nextJSP = "/traditionalHomePage.jsp";
         RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(nextJSP);
         dispatcher.forward(request, response);
-	    
-	}
-
-
+    }
 
 }

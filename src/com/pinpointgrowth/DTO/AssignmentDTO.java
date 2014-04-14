@@ -2,6 +2,9 @@ package com.pinpointgrowth.DTO;
 
 public class AssignmentDTO {
     private int assignmentID;
+    private int courseID;
+    private int rubricID;
+    private String assignmentName;
 
     public int getAssignmentID() {
         return assignmentID;
@@ -34,9 +37,4 @@ public class AssignmentDTO {
     public void setAssignmentName(String assignmentName) {
         this.assignmentName = assignmentName;
     }
-
-    private int courseID;
-    private int rubricID;
-    private String assignmentName;
-
 }

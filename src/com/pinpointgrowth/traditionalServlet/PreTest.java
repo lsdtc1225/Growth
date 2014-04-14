@@ -33,22 +33,28 @@ public class PreTest extends HttpServlet {
     private int numberOfRange;
     private HashMap<Integer, String> scoreDescriptionMap = new HashMap<Integer, String>();
 
-    private boolean recordExist(Statement statement) throws SQLException {
+    private boolean recordExist() throws ClassNotFoundException, SQLException {
+        Class.forName(Constants.JDBC_DRIVER_CLASS);
+        Connection connection = DriverManager.getConnection(Constants.DATABASE_URL, Constants.DATABASE_USERNAME, Constants.DATABASE_PASSWORD);
+        Statement statement = connection.createStatement();
         String checkSetupForPreTestSQL = TraditionalConstants.CHECK_SETUP_FOR_PRE_TEST_SQL(cID);
         ResultSet resultSet = statement.executeQuery(checkSetupForPreTestSQL);
-        return resultSet.first();
+        Boolean result = resultSet.first();
+        connection.close();
+        statement.close();
+        resultSet.close();
+        return result;
     }
 
     private void savePreTestRecord() throws ClassNotFoundException, SQLException {
         Class.forName(Constants.JDBC_DRIVER_CLASS);
-        Connection con = DriverManager.getConnection(Constants.DATABASE_URL, Constants.DATABASE_USERNAME, Constants.DATABASE_PASSWORD);
-        Statement statement = con.createStatement();
+        Connection connection = DriverManager.getConnection(Constants.DATABASE_URL, Constants.DATABASE_USERNAME, Constants.DATABASE_PASSWORD);
+        Statement statement = connection.createStatement();
 
-        if(recordExist(statement)){
+        if(recordExist()){
             String deleteSetupForPreTestSQL = TraditionalConstants.DELETE_SETUP_FOR_PRE_TEST_SQL(cID);
             statement.executeUpdate(deleteSetupForPreTestSQL);
         }
-            
         for(int scoreLevel = 1; scoreLevel <= numberOfRange; scoreLevel++){
             if(!scoreDescriptionMap.isEmpty()){
                 int min = Collections.min(scoreDescriptionMap.keySet());
@@ -57,6 +63,9 @@ public class PreTest extends HttpServlet {
                 scoreDescriptionMap.remove(min);
             }
         }
+
+        connection.close();
+        statement.close();
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -67,7 +76,6 @@ public class PreTest extends HttpServlet {
         userName = loginBean.getUsername();
         cID = preTestSetupBean.getcID();
         numberOfRange = preTestSetupBean.getNumberOfRange();
-
         
         for(int i = 1; i <= numberOfRange; i++){
             String paramTopScore = request.getParameter("topScore_"+i).replace("" + '"', "").replace(";", "");
@@ -76,6 +84,7 @@ public class PreTest extends HttpServlet {
         }
 
         try {
+
             savePreTestRecord();
         }
         catch (ClassNotFoundException e) {

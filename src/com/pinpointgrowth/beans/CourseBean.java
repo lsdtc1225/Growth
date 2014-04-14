@@ -10,10 +10,7 @@ import com.pinpointgrowth.DTO.CourseDTO;
 import com.pinpointgrowth.constants.Constants;
 
 public class CourseBean implements java.io.Serializable {
-
-    /**
-     * 
-     */
+    
     private static final long serialVersionUID = 312526693132916160L;
     private CourseDTO courseDTO;
     private int courseIDForSetup;

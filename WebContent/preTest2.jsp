@@ -29,71 +29,59 @@
                     <form action="PreTest" method="post">
                         <table border="1">
                             <tr>
-                                <th>Example</th><th>Top Score in range</th><th>Range Description</th>
+                                <th>Cut Score</th><th>Performance Descriptor</th>
                             </tr>
 
                             <c:if test="${preTestSetupBean.numberOfRange == 3 }">
                                 <tr>
-                                    <td>if 30 this range will be 0-30</td>
                                     <td><input type="text" name="topScore_1" value="30"></td>
                                     <td><input type="text" name="description_1" value="below proficient"></td>
                                 </tr>
                                 <tr>
-                                    <td>if 60 this range will be 31-60</td>
                                     <td><input type="text" name="topScore_2" value="60"></td>
                                     <td><input type="text" name="description_2" value="proficient"></td>
                                 </tr>
                                 <tr>
-                                    <td>if 100 this range will be 61-100</td>
                                     <td><input type="text" name="topScore_3" value="100"></td>
                                     <td><input type="text" name="description_3" value="above proficient"></td>
                                 </tr>
                             </c:if>
                             <c:if test="${preTestSetupBean.numberOfRange == 4 }">
                                 <tr>
-                                    <td>if 25 this range will be 0-25</td>
                                     <td><input type="text" name="topScore_1" value="25"></td>
                                     <td><input type="text" name="description_1" value="basic"></td>
                                 </tr>
                                 <tr>
-                                    <td>if 50 this range will be 26-50</td>
                                     <td><input type="text" name="topScore_2" value="50"></td>
                                     <td><input type="text" name="description_2" value="below proficient"></td>
                                 </tr>
                                 <tr>
-                                    <td>if 75 this range will be 51-75</td>
                                     <td><input type="text" name="topScore_3" value="75"></td>
                                     <td><input type="text" name="description_3" value="proficient"></td>
                                 </tr>
                                 <tr>
-                                    <td>if 100 this range will be 76-100</td>
                                     <td><input type="text" name="topScore_4" value="100"></td>
                                     <td><input type="text" name="description_4" value="above proficient"></td>
                                 </tr>
                             </c:if>
                             <c:if test="${preTestSetupBean.numberOfRange == 5 }">
                                 <tr>
-                                    <td>if 20 this range will be 0-20</td>
                                     <td><input type="text" name="topScore_1" value="20"></td>
                                     <td><input type="text" name="description_1" value=""></td>
                                 </tr>
                                 <tr>
-                                    <td>if 40 this range will be 21-40</td>
                                     <td><input type="text" name="topScore_2" value="40"></td>
                                     <td><input type="text" name="description_2" value=""></td>
                                 </tr>
                                 <tr>
-                                    <td>if 60 this range will be 41-60</td>
                                     <td><input type="text" name="topScore_3" value="60"></td>
                                     <td><input type="text" name="description_3" value=""></td>
                                 </tr>
                                 <tr>
-                                    <td>if 80 this range will be 61-80</td>
                                     <td><input type="text" name="topScore_4" value="80"></td>
                                     <td><input type="text" name="description_4" value=""></td>
                                 </tr>
                                 <tr>
-                                    <td>if 100 this range will be 81-100</td>
                                     <td><input type="text" name="topScore_5" value="100"></td>
                                     <td><input type="text" name="description_5" value=""></td>
                                 </tr>
