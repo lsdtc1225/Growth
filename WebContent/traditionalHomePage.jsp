@@ -61,6 +61,15 @@
             </div>
         </c:if>
         
+
+        <br/>
+        <br/>
+
+        <div>
+            <h3>
+                <a href="traditionalAddStudent.jsp?cID=<c:out value="${param.cID}"/>">Add Student</a>
+            </h3>
+        </div>
         
 <%--         <c:if test="${preTest.isReady()}">
             <a href="ViewPreTest.jsp">View Pre-test</a>

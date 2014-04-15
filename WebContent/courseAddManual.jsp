@@ -93,7 +93,7 @@
                         <tr>
                             <td>First Name</td>
                             <td>Last Name</td>
-                            <td>Grade</td>
+                            <td>Grade Level</td>
                         </tr>
                         <c:forEach var="i" begin="1" end="${addCourseManualBean.numberOfStudents}" step="1" varStatus ="status">
                             <tr>

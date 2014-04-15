@@ -248,17 +248,25 @@ public class Tier extends HttpServlet {
         Connection con = DriverManager.getConnection(Constants.DATABASE_URL, Constants.DATABASE_USERNAME, Constants.DATABASE_PASSWORD);
         for (StudentDTO student : studentList) {
             int sumOfScores = 0;
+
+            int sumOfWeight = 0;
+
             for (Integer oID : oIDList) {
                 Statement statement = con.createStatement();
                 ResultSet objective = statement.executeQuery(Constants.GET_OBJECTIVE(oID));
                 objective.first();
                 int weight = objective.getInt(objective.findColumn("Weight"));
+
+                sumOfWeight += weight;
+
                 ResultSet score = statement.executeQuery(Constants.GET_STUOBJLOOKUP(student.getStudentID(), oID));
                 score.first();
                 int scoreValue = score.getInt(score.findColumn("PreGradePerf"));
                 sumOfScores += (scoreValue * weight);
             }
-            double score = (double) sumOfScores / (double) oIDList.size();
+            //double score = (double) sumOfScores / (double) oIDList.size();
+
+            double score = (double) sumeOfScores / (double) sumOfWeight;
             student.setScore(score);
         }
         List<Double> tempList = new ArrayList<Double>();

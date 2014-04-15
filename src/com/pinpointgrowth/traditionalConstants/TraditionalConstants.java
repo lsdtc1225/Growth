@@ -124,6 +124,11 @@ public class TraditionalConstants {
         return "SELECT * FROM Pinpoint.Weight WHERE C_ID = " + cID + ';';
     }
 
+    //used in TraditionalAddStudentScore.java
+    public static String GET_COURSE_NAME_SQL(int cID){
+        return "SELECT * FROM Pinpoint.Classes WHERE C_ID = " + cID + ';';
+    }
+
 }
 
 

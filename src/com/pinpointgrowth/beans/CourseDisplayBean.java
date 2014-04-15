@@ -33,16 +33,16 @@ public class CourseDisplayBean implements java.io.Serializable {
         if (this.courseNames == null) {
             courseNames = new ArrayList<CourseDTO>();
             Class.forName(Constants.JDBC_DRIVER_CLASS);
-            Connection con = DriverManager.getConnection(Constants.DATABASE_URL, Constants.DATABASE_USERNAME, Constants.DATABASE_PASSWORD);
-            Statement statement = con.createStatement();
-            int teacherID = getTeacherID(statement);
-            ResultSet results = statement.executeQuery(Constants.GET_COURSES_FOR_TEACHER(teacherID));
-            while (results.next()) {
+            Connection connection = DriverManager.getConnection(Constants.DATABASE_URL, Constants.DATABASE_USERNAME, Constants.DATABASE_PASSWORD);
+            Statement statement = connection.createStatement();
+            int teacherID = getTeacherID();
+            ResultSet resultSet = statement.executeQuery(Constants.GET_COURSES_FOR_TEACHER(teacherID));
+            while (resultSet.next()) {
                 CourseDTO courseDTO = new CourseDTO();
-                String courseName = results.getString(results.findColumn("CName"));
-                String courseLength = results.getString(results.findColumn("CourseLength"));
-                String courseTerm = results.getString(results.findColumn("Term"));
-                int courseID = results.getInt(results.findColumn("C_ID"));
+                String courseName = resultSet.getString(resultSet.findColumn("CName"));
+                String courseLength = resultSet.getString(resultSet.findColumn("CourseLength"));
+                String courseTerm = resultSet.getString(resultSet.findColumn("Term"));
+                int courseID = resultSet.getInt(resultSet.findColumn("C_ID"));
                 courseDTO.setCourseID(courseID);
                 courseDTO.setCourseLength(courseLength);
                 courseDTO.setTeacherID(teacherID);
@@ -51,7 +51,8 @@ public class CourseDisplayBean implements java.io.Serializable {
                 courseNames.add(courseDTO);
             }
             statement.close();
-            con.close();
+            connection.close();
+            resultSet.close();
         }
         return courseNames;
     }
@@ -60,12 +61,16 @@ public class CourseDisplayBean implements java.io.Serializable {
         this.courseNames = courseNames;
     }
 
-    private int getTeacherID(Statement statement) throws SQLException {
-        ResultSet resultSet = statement.executeQuery(Constants
-                .TEACHER_ID_QUERY(userName));
+    private int getTeacherID() throws SQLException, ClassNotFoundException {
+        Class.forName(Constants.JDBC_DRIVER_CLASS);
+        Connection connection = DriverManager.getConnection(Constants.DATABASE_URL, Constants.DATABASE_USERNAME, Constants.DATABASE_PASSWORD);
+        Statement statement = connection.createStatement();
+        ResultSet resultSet = statement.executeQuery(Constants.TEACHER_ID_QUERY(userName));
         resultSet.first();
-        int column = resultSet.findColumn("T_ID");
-        int teacherID = resultSet.getInt(column);
+        int teacherID = resultSet.getInt(resultSet.findColumn("T_ID"));
+        connection.close();
+        statement.close();
+        resultSet.close();
         return teacherID;
     }
 }

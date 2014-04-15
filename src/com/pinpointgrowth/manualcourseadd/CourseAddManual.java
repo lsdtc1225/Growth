@@ -33,21 +33,27 @@ public class CourseAddManual extends HttpServlet {
     private float performanceWeight;
     private float traditionalWeight;
 
-    private int getTeacherID(Statement statement) throws SQLException {
+    private int getTeacherID() throws ClassNotFoundException, SQLException {
+        Class.forName(Constants.JDBC_DRIVER_CLASS);
+        Connection connection = DriverManager.getConnection(Constants.DATABASE_URL, Constants.DATABASE_USERNAME, Constants.DATABASE_PASSWORD);
+        Statement statement = connection.createStatement();
         ResultSet resultSet = statement.executeQuery(Constants.TEACHER_ID_QUERY(userName));
         resultSet.first();
-        int column = resultSet.findColumn("T_ID");
-        int teacherID = resultSet.getInt(column);
+        int teacherID = resultSet.getInt(resultSet.findColumn("T_ID"));
+
+        connection.close();
+        statement.close();
+        resultSet.close();
         return teacherID;
     }
 
     private void saveStudentList() throws ClassNotFoundException, SQLException {
         Class.forName(Constants.JDBC_DRIVER_CLASS);
-        Connection con = DriverManager.getConnection(Constants.DATABASE_URL, Constants.DATABASE_USERNAME, Constants.DATABASE_PASSWORD);
-        Statement courseIDStatement = con.createStatement();
-        Statement statement = con.createStatement();
+        Connection connection = DriverManager.getConnection(Constants.DATABASE_URL, Constants.DATABASE_USERNAME, Constants.DATABASE_PASSWORD);
+        Statement courseIDStatement = connection.createStatement();
+        Statement statement = connection.createStatement();
 
-        int t_id = getTeacherID(statement);
+        int t_id = getTeacherID();
         statement.executeUpdate(Constants.COURSE_ADD_SQL(t_id, 
             addCourseManualBean.getCourseTerm().replace("" + '"', "").replace(";", ""), 
             addCourseManualBean.getCourseName().replace("" + '"', "").replace(";", ""), 
@@ -57,23 +63,23 @@ public class CourseAddManual extends HttpServlet {
             addCourseManualBean.getCourseName().replace("" + '"', "").replace(";", ""),
             addCourseManualBean.getCourseRoom().replace("" + '"', "").replace(";", "")));
         courseIDResult.last();
-        int coulmnForCID = courseIDResult.findColumn("C_ID");
-        int courseID = courseIDResult.getInt(coulmnForCID);
+        //int coulmnForCID = courseIDResult.findColumn("C_ID");
+        int courseID = courseIDResult.getInt(courseIDResult.findColumn("C_ID"));
         cID = courseID;
 
         for (StudentDataRecord record : studentList) {
-            Statement addStudentStatement = con.createStatement();
+            Statement addStudentStatement = connection.createStatement();
             addStudentStatement.executeUpdate(Constants.STUDENT_ADD_SQL(record.getStudentFirstName(), 
                 record.getStudentLastName(),
                 record.getStudentGrade()));
-            Statement studentIDStatement = con.createStatement();
-            ResultSet result = studentIDStatement.executeQuery(Constants.GET_STUDENT_ID_SQL(record.getStudentFirstName(),
+            Statement studentIDStatement = connection.createStatement();
+            ResultSet resultSet = studentIDStatement.executeQuery(Constants.GET_STUDENT_ID_SQL(record.getStudentFirstName(),
                 record.getStudentLastName(),
                 record.getStudentGrade()));
-            result.last();
-            int studentIDColumn = result.findColumn("S_ID");
-            int studentID = result.getInt(studentIDColumn);
-            Statement addTakingStatement = con.createStatement();
+            resultSet.last();
+            //int studentIDColumn = resultSet.findColumn("S_ID");
+            int studentID = resultSet.getInt(resultSet.findColumn("S_ID"));
+            Statement addTakingStatement = connection.createStatement();
             addTakingStatement.executeUpdate(Constants.TAKING_ADD_SQL(studentID, courseID));
         }
     }
