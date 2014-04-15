@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.PreparedStatement;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -86,11 +87,12 @@ public class CourseAddManual extends HttpServlet {
 
     private void saveWeight() throws ClassNotFoundException, SQLException{
         Class.forName(Constants.JDBC_DRIVER_CLASS);
-        Connection con = DriverManager.getConnection(Constants.DATABASE_URL, Constants.DATABASE_USERNAME, Constants.DATABASE_PASSWORD);
-        PreparedStatement preparedStatement = con.prepareStatement("INSERT INTO Pinpoint.Weight VALUES (?, ?, ?)");
+        Connection connection = DriverManager.getConnection(Constants.DATABASE_URL, Constants.DATABASE_USERNAME, Constants.DATABASE_PASSWORD);
+        PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO Pinpoint.Weight VALUES (?, ?, ?, ?)");
         preparedStatement.setInt(1, cID);
         preparedStatement.setFloat(2, performanceWeight);
         preparedStatement.setFloat(3, traditionalWeight);
+        preparedStatement.setNull(4, Types.NULL);
         preparedStatement.executeUpdate();
 
     }

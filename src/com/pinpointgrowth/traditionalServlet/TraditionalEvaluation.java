@@ -50,6 +50,8 @@ public class TraditionalEvaluation extends HttpServlet {
 
     private StudentEvaluationBean studentEvaluationBean= new StudentEvaluationBean();
 
+    private float result;
+
     private void setHighestScore() throws ClassNotFoundException, SQLException{
         Class.forName(Constants.JDBC_DRIVER_CLASS);
         Connection connection = DriverManager.getConnection(Constants.DATABASE_URL, Constants.DATABASE_USERNAME, Constants.DATABASE_PASSWORD);
@@ -529,6 +531,18 @@ public class TraditionalEvaluation extends HttpServlet {
     }
     //=======================DANGER SECTION ENDS===========================
 
+    private void saveResult() throws ClassNotFoundException, SQLException{
+        Class.forName(Constants.JDBC_DRIVER_CLASS);
+        Connection connection = DriverManager.getConnection(Constants.DATABASE_URL, Constants.DATABASE_USERNAME, Constants.DATABASE_PASSWORD);
+        Statement statement = connection.createStatement();
+
+        String updateResultSQL = TraditionalConstants.UPDATE_RESULT_SQL(cID, result);
+        statement.executeUpdate(updateResultSQL);
+
+        connection.close();
+        statement.close();
+    }
+
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         
         PreTestSetupBean preTestSetupBean = (PreTestSetupBean) request.getSession().getAttribute("preTestSetupBean");
@@ -572,7 +586,15 @@ public class TraditionalEvaluation extends HttpServlet {
             e.printStackTrace();
         }
 
-        studentEvaluationBean.setResult(performanceWeight*performancePassRate + traditionalWeight*traditionalPassRate);
+        result = performanceWeight*performancePassRate + traditionalWeight*traditionalPassRate;
+        studentEvaluationBean.setResult(result);
+
+        try{
+            saveResult();
+        } catch (ClassNotFoundException | SQLException e){
+            e.printStackTrace();
+        }
+
         request.setAttribute("studentEvaluationBean", studentEvaluationBean);
 
         String nextJSP = "/traditionalEvaluation.jsp";

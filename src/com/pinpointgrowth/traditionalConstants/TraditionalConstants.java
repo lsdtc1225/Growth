@@ -129,6 +129,16 @@ public class TraditionalConstants {
         return "SELECT * FROM Pinpoint.Classes WHERE C_ID = " + cID + ';';
     }
 
+
+    public static String UPDATE_RESULT_SQL(int cID, float result){
+        return "UPDATE Pinpoint.Weight SET Result =  " + result + " WHERE C_ID = " + cID + ';';
+    }
+
+
+    //used in TraditionalConstants.java
+    public static String GET_COURSE_RESULT_SQL(int cID){
+        return "SELECT * FROM Pinpoint.Weight WHERE C_ID = " + cID + ';';
+    }
 }
 
 

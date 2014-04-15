@@ -38,7 +38,8 @@
         <div>
             <h3><a href="addCoursePage.jsp">Add a Course</a></h3>
             <br>
-            <h3><a href="EvaluateTeacher">See Final Evaluation Report</a></h3>
+            <!-- <h3><a href="EvaluateTeacher">See Final Evaluation Report</a></h3> -->
+            <h3><a href="FinalEvaluation">See Final Evaluation Report</a></h3>
         </div>
     
     </body>
