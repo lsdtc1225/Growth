@@ -97,6 +97,9 @@ public class FinalEvaluation extends HttpServlet {
 
         ArrayList<FinalEvaluationBean> finalEvaluationBeanList = new ArrayList<FinalEvaluationBean>();
 
+        averageResult = 0;
+        numberOfCourse = 0;
+
         try{
             getTeacherID();
             getFinalEvaluationBeanList(finalEvaluationBeanList);
