@@ -27,14 +27,12 @@
                         <th>Student FirstName</th>
                         <th>Student LastName</th>
                         <th>pre-Test Score(0-100)</th>
-                        <th>post-Test Score(0-100)</th>
                     </tr>
                     <c:forEach var="student" items="${studentList}" varStatus="rowCounter">
                         <tr>
                             <td><c:out value="${student.studentFirstName}"/></td>
                             <td><c:out value="${student.studentLastName}"/></td>
                             <td><input type="text" name="preTest_${student.sID}" /></td>
-                            <td><input type="text" name="postTest_${student.sID}" /></td>
                         </tr>
                     </c:forEach>
                 </table>

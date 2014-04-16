@@ -27,7 +27,6 @@ import com.pinpointgrowth.traditionalBeans.StudentEvaluationBean;
 
 import com.pinpointgrowth.DTO.FinalEvaluationDTO;
 import com.pinpointgrowth.DTO.StudentDTO;
-import com.pinpointgrowth.beans.TeacherEvaluationBean;
 
 
 @WebServlet(urlPatterns = { "/TraditionalEvaluation"})
@@ -39,18 +38,18 @@ public class TraditionalEvaluation extends HttpServlet {
     private int preHighestScore;
     private int postHighestScore;
 
-    private ArrayList<Integer> preCutScore = new ArrayList<Integer>();
-    private ArrayList<Integer> postCutScore = new ArrayList<Integer>();
+    private ArrayList<Integer> preCutScore;
+    private ArrayList<Integer> postCutScore;
 
     private float performanceWeight;
     private float traditionalWeight;
 
     private float performancePassRate;
     private float traditionalPassRate;
-
-    private StudentEvaluationBean studentEvaluationBean= new StudentEvaluationBean();
-
     private float result;
+
+    private StudentEvaluationBean studentEvaluationBean;
+    private PreTestSetupBean preTestSetupBean;
 
     private void setHighestScore() throws ClassNotFoundException, SQLException{
         Class.forName(Constants.JDBC_DRIVER_CLASS);
@@ -545,9 +544,13 @@ public class TraditionalEvaluation extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         
-        PreTestSetupBean preTestSetupBean = (PreTestSetupBean) request.getSession().getAttribute("preTestSetupBean");
+        preTestSetupBean = (PreTestSetupBean) request.getSession().getAttribute("preTestSetupBean");
         cID = preTestSetupBean.getcID();
         numberOfRange = preTestSetupBean.getNumberOfRange();
+
+        preCutScore = new ArrayList<Integer>();
+        postCutScore = new ArrayList<Integer>();
+        studentEvaluationBean= new StudentEvaluationBean();
 
         try {
             setHighestScore();

@@ -29,6 +29,9 @@ public class ViewCourseTraditional extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
 	private String userName;
+    private int cID;
+    private LoginBean loginBean;
+
     
     private int getTeacherID() throws SQLException, ClassNotFoundException {
         Class.forName(Constants.JDBC_DRIVER_CLASS);
@@ -71,8 +74,8 @@ public class ViewCourseTraditional extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        int cID = Integer.parseInt(request.getParameter("cID"));
-        LoginBean loginBean = (LoginBean) request.getSession().getAttribute("loginInfo");
+        cID = Integer.parseInt(request.getParameter("cID"));
+        loginBean = (LoginBean) request.getSession().getAttribute("loginInfo");
         userName = loginBean.getUsername();
         try {
 

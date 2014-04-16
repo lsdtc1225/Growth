@@ -28,10 +28,12 @@ import com.pinpointgrowth.traditionalBeans.PreTestSetupBean;
 public class PreTest extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
+    private LoginBean loginBean;
+    private PreTestSetupBean preTestSetupBean;
     private String userName;
     private int cID;
     private int numberOfRange;
-    private HashMap<Integer, String> scoreDescriptionMap = new HashMap<Integer, String>();
+    private HashMap<Integer, String> scoreDescriptionMap;
 
     private boolean recordExist() throws ClassNotFoundException, SQLException {
         Class.forName(Constants.JDBC_DRIVER_CLASS);
@@ -70,13 +72,14 @@ public class PreTest extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        LoginBean loginBean = (LoginBean) request.getSession().getAttribute("loginInfo");
-        PreTestSetupBean preTestSetupBean = (PreTestSetupBean) request.getSession().getAttribute("preTestSetupBean");
+        loginBean = (LoginBean) request.getSession().getAttribute("loginInfo");
+        preTestSetupBean = (PreTestSetupBean) request.getSession().getAttribute("preTestSetupBean");
 
         userName = loginBean.getUsername();
         cID = preTestSetupBean.getcID();
         numberOfRange = preTestSetupBean.getNumberOfRange();
-        
+        scoreDescriptionMap = new HashMap<Integer, String>();
+
         for(int i = 1; i <= numberOfRange; i++){
             String paramTopScore = request.getParameter("topScore_"+i).replace("" + '"', "").replace(";", "");
             String paramDescription = request.getParameter("description_"+i).replace("" + '"', "").replace(";", "");

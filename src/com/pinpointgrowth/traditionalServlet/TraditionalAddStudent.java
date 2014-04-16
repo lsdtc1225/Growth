@@ -6,9 +6,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.sql.PreparedStatement;
 import java.util.ArrayList;
-import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -17,9 +15,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.lang3.exception.ExceptionUtils;
-
-import com.pinpointgrowth.beans.AddCourseManualBean;
 import com.pinpointgrowth.beans.LoginBean;
 import com.pinpointgrowth.constants.Constants;
 import com.pinpointgrowth.excel.StudentDataRecord;
@@ -27,20 +22,20 @@ import com.pinpointgrowth.excel.StudentDataRecord;
 
 @WebServlet(urlPatterns={"/TraditionalAddStudent"})
 public class TraditionalAddStudent extends HttpServlet {
+
     private static final long serialVersionUID = 1L;
     private LoginBean loginBean;
     private String userName;
     private int numberOfStudent;
     private int cID;
-    private List<StudentDataRecord> studentList = new ArrayList<StudentDataRecord>();
+    private ArrayList<StudentDataRecord> studentList;
 
     private void saveStudentList() throws ClassNotFoundException, SQLException{
         Class.forName(Constants.JDBC_DRIVER_CLASS);
         Connection connection = DriverManager.getConnection(Constants.DATABASE_URL, Constants.DATABASE_USERNAME, Constants.DATABASE_PASSWORD);
         Statement statement = connection.createStatement();
 
-
-        for (int i = 0; i < studentList.size(); i++){
+        for (int i = 0; i < numberOfStudent; i++){
             statement.executeUpdate(Constants.STUDENT_ADD_SQL(studentList.get(i).getStudentFirstName(), studentList.get(i).getStudentLastName(), studentList.get(i).getStudentGrade()));
             ResultSet resultSet = statement.executeQuery(Constants.GET_STUDENT_ID_SQL(studentList.get(i).getStudentFirstName(), studentList.get(i).getStudentLastName(), studentList.get(i).getStudentGrade()));
             resultSet.last();
@@ -48,24 +43,18 @@ public class TraditionalAddStudent extends HttpServlet {
             studentList.get(i).setsID(sID);
             statement.executeUpdate(Constants.TAKING_ADD_SQL(sID, cID));
         }
-        
-        // for(StudentDataRecord record : studentList){
-        //     statement.executeUpdate(Constants.STUDENT_ADD_SQL(record.getStudentFirstName(), record.getStudentLastName(), record.getStudentGrade()));
-        //     ResultSet resultSet = statement.executeQuery(Constants.GET_STUDENT_ID_SQL(record.getStudentFirstName(), record.getStudentLastName(), record.getStudentGrade()));
-        //     resultSet.last();
-        //     int sID = resultSet.getInt(resultSet.findColumn("S_ID"));
-        //     statement.executeUpdate(Constants.TAKING_ADD_SQL(sID, cID));
-        // }
 
         connection.close();
         statement.close();
     }
     
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
         loginBean = (LoginBean) request.getSession().getAttribute("loginInfo");
         userName = loginBean.getUsername();
         numberOfStudent = Integer.parseInt(request.getParameter("numberOfStudent"));
         cID = Integer.parseInt(request.getParameter("cID"));
+        studentList = new ArrayList<StudentDataRecord>();
 
         for(int i = 1; i <= numberOfStudent; i++){
             StudentDataRecord record = new StudentDataRecord();
@@ -81,9 +70,7 @@ public class TraditionalAddStudent extends HttpServlet {
 
         try{
             saveStudentList();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (SQLException e) {
+        } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
         }
 

@@ -13,10 +13,9 @@
 
 <sql:setDataSource var="testRecord" driver="<%=Constants.JDBC_DRIVER_CLASS%>" url="<%=Constants.DATABASE_URL%>" user="<%=Constants.DATABASE_USERNAME%>"  password="<%=Constants.DATABASE_PASSWORD%>"/>
 
-<sql:query dataSource="${testRecord}" var="preTestResultSet"> SELECT * FROM Pinpoint.PreTest WHERE C_ID = <c:out value="${preTestSetupBean.cID}"/></sql:query> 
+<sql:query dataSource="${testRecord}" var="preTestResultSet">SELECT * FROM Pinpoint.PreTest WHERE C_ID = <c:out value="${preTestSetupBean.cID}"/>;</sql:query> 
 
-<sql:query dataSource="${testRecord}" var="postTestResultSet"> SELECT * FROM Pinpoint.PostTest WHERE C_ID = <c:out value="${preTestSetupBean.cID}"/></sql:query>
-
+<sql:query dataSource="${testRecord}" var="postTestResultSet">SELECT * FROM Pinpoint.PostTest WHERE C_ID = <c:out value="${preTestSetupBean.cID}"/>;</sql:query>
 
 <html>
 
@@ -52,7 +51,7 @@
             </h3>
         </div>
         
-        <c:if test="${preTestResultSet.rowCount != 0}">
+        <c:if test="${preTestResultSet.rowCount!=0}">
             <div>
                 <h3>
                     <a href = "postTest2.jsp?cID=<c:out value="${param.cID}"/>&cName=<c:out value="${courseBean.courseDTO.courseName}"/>">Setup Post-Test</a>
@@ -60,21 +59,17 @@
                 </h3>
             </div>
         </c:if>
-        
-
         <br/>
-        <br/>
+        <c:if test="${(preTestResultSet.rowCount!=0) && (postTestResultSet.rowCount==0)}">
+            <div>
+                <h3>
+                    <a href="traditionalAddStudent.jsp?cID=<c:out value="${param.cID}"/>">Add Student</a>
+                </h3>
+            </div>
+        </c:if>
 
-        <div>
-            <h3>
-                <a href="traditionalAddStudent.jsp?cID=<c:out value="${param.cID}"/>">Add Student</a>
-            </h3>
-        </div>
-        
-<%--         <c:if test="${preTest.isReady()}">
-            <a href="ViewPreTest.jsp">View Pre-test</a>
-            <br/>
-        </c:if> --%>
-        
+        <c:if test="${param.SE}">
+            <jsp:forward page="TraditionalEvaluation" />
+        </c:if>
     </body>
 </html>

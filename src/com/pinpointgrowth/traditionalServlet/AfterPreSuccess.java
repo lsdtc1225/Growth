@@ -27,6 +27,9 @@ import com.pinpointgrowth.constants.Constants;
 @WebServlet(urlPatterns ={ "/AfterPreSuccess" })
 public class AfterPreSuccess extends HttpServlet {
     private static final long serialVersionUID = 1L;
+
+    private int cID;
+    private LoginBean loginBean;
     private String userName;
     
     private int getTeacherID() throws SQLException, ClassNotFoundException {
@@ -36,12 +39,12 @@ public class AfterPreSuccess extends HttpServlet {
 
         ResultSet resultSet = statement.executeQuery(Constants.TEACHER_ID_QUERY(userName));
         resultSet.first();
-        int teacherID = resultSet.getInt(resultSet.findColumn("T_ID"));
+        int tID = resultSet.getInt(resultSet.findColumn("T_ID"));
 
         connection.close();
         statement.close();
         resultSet.close();
-        return teacherID;
+        return tID;
     }
 
     private CourseDTO setupCourseDTO(int cID) throws SQLException, ClassNotFoundException {
@@ -49,7 +52,7 @@ public class AfterPreSuccess extends HttpServlet {
         Connection connection = DriverManager.getConnection(Constants.DATABASE_URL, Constants.DATABASE_USERNAME, Constants.DATABASE_PASSWORD);
         Statement statement = connection.createStatement();
 
-        int teacherID = getTeacherID();
+        int tID = getTeacherID();
         ResultSet resultSet = statement.executeQuery(Constants.GET_COURSE(cID));
         resultSet.first();
         String courseName = resultSet.getString(resultSet.findColumn("CName"));
@@ -58,7 +61,7 @@ public class AfterPreSuccess extends HttpServlet {
         CourseDTO courseDTO = new CourseDTO();
         courseDTO.setCourseID(cID);
         courseDTO.setCourseLength(courseLength);
-        courseDTO.setTeacherID(teacherID);
+        courseDTO.setTeacherID(tID);
         courseDTO.setTerm(courseTerm);
         courseDTO.setCourseName(courseName);
 
@@ -70,8 +73,8 @@ public class AfterPreSuccess extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        int cID = Integer.parseInt(request.getParameter("cID"));
-        LoginBean loginBean = (LoginBean) request.getSession().getAttribute("loginInfo");
+        cID = Integer.parseInt(request.getParameter("cID"));
+        loginBean = (LoginBean) request.getSession().getAttribute("loginInfo");
         userName = loginBean.getUsername();
 
         try{

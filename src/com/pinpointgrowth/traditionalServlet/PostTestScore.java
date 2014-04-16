@@ -3,7 +3,6 @@ package com.pinpointgrowth.traditionalServlet;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Enumeration;
@@ -25,8 +24,12 @@ import com.pinpointgrowth.traditionalBeans.PreTestSetupBean;
 public class PostTestScore extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
+    private LoginBean loginBean;
+    PreTestSetupBean preTestSetupBean;
+
     private String userName;
     private int cID;
+
     private int sID;
     private int postTestScore;
 
@@ -44,9 +47,8 @@ public class PostTestScore extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        LoginBean loginBean = (LoginBean) request.getSession().getAttribute("loginInfo");
-        PreTestSetupBean preTestSetupBean = (PreTestSetupBean) request.getSession().getAttribute("preTestSetupBean");
-
+        loginBean = (LoginBean) request.getSession().getAttribute("loginInfo");
+        preTestSetupBean = (PreTestSetupBean) request.getSession().getAttribute("preTestSetupBean");
         userName = loginBean.getUsername();
         cID = preTestSetupBean.getcID();
 
@@ -57,19 +59,13 @@ public class PostTestScore extends HttpServlet {
             String paramValue = request.getParameter(paramName);
             if (paramValue.equals("")){
                 postTestScore = 0;
-            }
-            else{
+            } else{
                 postTestScore = Integer.parseInt(paramValue);
             }
             
             try {
-
                 savePostTestRecord();
-            }
-            catch (ClassNotFoundException e) {
-                e.printStackTrace();
-            }
-            catch (SQLException e) {
+            } catch (ClassNotFoundException | SQLException e) {
                 e.printStackTrace();
             }
         }

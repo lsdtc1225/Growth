@@ -6,8 +6,6 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.sql.PreparedStatement;
-import java.util.ArrayList;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -19,22 +17,16 @@ import javax.servlet.http.HttpServletResponse;
 import com.pinpointgrowth.beans.LoginBean;
 import com.pinpointgrowth.constants.Constants;
 import com.pinpointgrowth.traditionalConstants.TraditionalConstants;
-import com.pinpointgrowth.traditionalDTO.EvaluationDTO;
-import com.pinpointgrowth.traditionalBeans.PreTestSetupBean;
-import com.pinpointgrowth.traditionalBeans.StudentEvaluationBean;
 
-/**
- * Servlet implementation class CourseDelete
- */
 
 @WebServlet(urlPatterns = { "/CourseDelete" })
 public class CourseDelete extends HttpServlet {
-    private static final long serialVersionUID = 1L;
 
+    private static final long serialVersionUID = 1L;
+    private LoginBean loginBean;
     private int cID;
-    private int tID;
     private String userName;
-    private ArrayList<Integer> studentIDList;
+    private int tID;
 
     private void getTeacherID() throws ClassNotFoundException, SQLException{
         Class.forName(Constants.JDBC_DRIVER_CLASS);
@@ -50,41 +42,6 @@ public class CourseDelete extends HttpServlet {
         statement.close();
         resultSet.close();
     }
-    
-    // private void getStudentIDList() throws ClassNotFoundException, SQLException{
-    //     Class.forName(Constants.JDBC_DRIVER_CLASS);
-    //     Connection con = DriverManager.getConnection(Constants.DATABASE_URL, Constants.DATABASE_USERNAME, Constants.DATABASE_PASSWORD);
-    //     Statement statement = con.createStatement();
-        
-    //     String getStudentIDListSQL = TraditionalConstants.GET_STUDENT_ID_SQL(cID);
-    //     ResultSet resultSet = statement.executeQuery(getStudentIDListSQL);
-    //     while(resultSet.next()){
-    //         int studentID = Integer.parseInt(resultSet.getString(resultSet.findColumn("S_ID")));
-    //         studentIDList.add(studentID);
-    //     }
-    // }
-
-    // private void deleteRelatedStudent() throws ClassNotFoundException, SQLException{
-    //     Class.forName(Constants.JDBC_DRIVER_CLASS);
-    //     Connection con = DriverManager.getConnection(Constants.DATABASE_URL, Constants.DATABASE_USERNAME, Constants.DATABASE_PASSWORD);
-    //     PreparedStatement preparedStatement = con.prepareStatement("DELETE FROM Pinpoint.Enrolled WHERE S_ID = ?");
-    //     for(Integer i : studentIDList){
-    //         preparedStatement.setInt(1, i);
-    //         preparedStatement.executeUpdate();
-    //     }
-
-    //     preparedStatement = con.prepareStatement("DELETE FROM Pinpoint.StudObjLookup WHERE S_ID = ?");
-    //     for(Integer i : studentIDList){
-    //         preparedStatement.setInt(1, i);
-    //         preparedStatement.executeUpdate();
-    //     }
-
-    //     preparedStatement = con.prepareStatement("DELETE FROM Pinpoint.Student WHERE S_ID = ?");
-    //     for(Integer i : studentIDList){
-    //         preparedStatement.setInt(1, i);
-    //         preparedStatement.executeUpdate();
-    //     }
-    // }
 
     private void deleteCourse() throws ClassNotFoundException, SQLException{
         Class.forName(Constants.JDBC_DRIVER_CLASS);
@@ -115,26 +72,19 @@ public class CourseDelete extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
+        loginBean = (LoginBean) request.getSession().getAttribute("loginInfo");
         cID = Integer.parseInt(request.getParameter("cID"));
-        LoginBean loginBean = (LoginBean) request.getSession().getAttribute("loginInfo");
         userName = loginBean.getUsername();
 
         try {
             getTeacherID();
-            // getStudentIDList();
-            // if(studentIDList.size>0){
-            //     deleteRelatedStudent();
-            // }
             deleteCourse();
-
-        }
-        catch (ClassNotFoundException | SQLException e) {
+        } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
         }
 
         String nextJSP = "/mainUserPage.jsp";
         RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(nextJSP);
         dispatcher.forward(request, response);
-    }
-
+    } 
 }

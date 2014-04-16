@@ -27,9 +27,13 @@ import com.pinpointgrowth.traditionalBeans.PreTestSetupBean;
 public class PreTestScore extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
+    private LoginBean loginBean;
+    private PreTestSetupBean preTestSetupBean;
     private String userName;
     private int cID;
     private String cName;
+
+
     private int sID;
     private int preTestScore;
     
@@ -65,49 +69,10 @@ public class PreTestScore extends HttpServlet {
         statement.close();
     }
 
-    // private int getTeacherID() throws SQLException, ClassNotFoundException {
-    //     Class.forName(Constants.JDBC_DRIVER_CLASS);
-    //     Connection connection = DriverManager.getConnection(Constants.DATABASE_URL, Constants.DATABASE_USERNAME, Constants.DATABASE_PASSWORD);
-    //     Statement statement = connection.createStatement();
-
-    //     ResultSet resultSet = statement.executeQuery(Constants.TEACHER_ID_QUERY(userName));
-    //     resultSet.first();
-    //     int teacherID = resultSet.getInt(resultSet.findColumn("T_ID"));
-
-    //     connection.close();
-    //     statement.close();
-    //     resultSet.close();
-    //     return teacherID;
-    // }
-
-    // private CourseDTO setupCourseDTO(int cID) throws SQLException, ClassNotFoundException {
-    //     Class.forName(Constants.JDBC_DRIVER_CLASS);
-    //     Connection connection = DriverManager.getConnection(Constants.DATABASE_URL, Constants.DATABASE_USERNAME, Constants.DATABASE_PASSWORD);
-    //     Statement statement = connection.createStatement();
-
-    //     int teacherID = getTeacherID();
-    //     ResultSet resultSet = statement.executeQuery(Constants.GET_COURSE(cID));
-    //     resultSet.first();
-    //     String courseName = resultSet.getString(resultSet.findColumn("CName"));
-    //     String courseLength = resultSet.getString(resultSet.findColumn("CourseLength"));
-    //     String courseTerm = resultSet.getString(resultSet.findColumn("Term"));
-    //     CourseDTO courseDTO = new CourseDTO();
-    //     courseDTO.setCourseID(cID);
-    //     courseDTO.setCourseLength(courseLength);
-    //     courseDTO.setTeacherID(teacherID);
-    //     courseDTO.setTerm(courseTerm);
-    //     courseDTO.setCourseName(courseName);
-
-    //     connection.close();
-    //     statement.close();
-    //     resultSet.close();
-    //     return courseDTO;
-    // }
-
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        LoginBean loginBean = (LoginBean) request.getSession().getAttribute("loginInfo");
-        PreTestSetupBean preTestSetupBean = (PreTestSetupBean) request.getSession().getAttribute("preTestSetupBean");
+        loginBean = (LoginBean) request.getSession().getAttribute("loginInfo");
+        preTestSetupBean = (PreTestSetupBean) request.getSession().getAttribute("preTestSetupBean");
 
         userName = loginBean.getUsername();
         cID = preTestSetupBean.getcID();
@@ -126,13 +91,7 @@ public class PreTestScore extends HttpServlet {
             }
             
             try {
-
                 savePreTestRecord();
-
-                // CourseDTO courseDTO = setupCourseDTO(cID);
-                // CourseBean courseBean = new CourseBean();
-                // courseBean.setCourseDTO(courseDTO);
-                // request.setAttribute("courseBean", courseBean);
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
             } catch (SQLException e) {

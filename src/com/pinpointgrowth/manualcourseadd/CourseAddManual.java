@@ -27,12 +27,14 @@ import com.pinpointgrowth.excel.StudentDataRecord;
 public class CourseAddManual extends HttpServlet {
 
     private static final long serialVersionUID = -1226906935688817302L;
-    private List<StudentDataRecord> studentList = new ArrayList<StudentDataRecord>();
-    private AddCourseManualBean addCourseManualBean;
+
+    private LoginBean loginBean;
     private String userName;
     private int cID;
     private float performanceWeight;
     private float traditionalWeight;
+    private List<StudentDataRecord> studentList;
+    private AddCourseManualBean addCourseManualBean;
 
     private int getTeacherID() throws ClassNotFoundException, SQLException {
         Class.forName(Constants.JDBC_DRIVER_CLASS);
@@ -79,9 +81,9 @@ public class CourseAddManual extends HttpServlet {
                 record.getStudentGrade()));
             resultSet.last();
             //int studentIDColumn = resultSet.findColumn("S_ID");
-            int studentID = resultSet.getInt(resultSet.findColumn("S_ID"));
+            int sID = resultSet.getInt(resultSet.findColumn("S_ID"));
             Statement addTakingStatement = connection.createStatement();
-            addTakingStatement.executeUpdate(Constants.TAKING_ADD_SQL(studentID, courseID));
+            addTakingStatement.executeUpdate(Constants.TAKING_ADD_SQL(sID, courseID));
         }
     }
 
@@ -95,17 +97,22 @@ public class CourseAddManual extends HttpServlet {
         preparedStatement.setNull(4, Types.NULL);
         preparedStatement.executeUpdate();
 
+        connection.close();
+        statement.close();
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        LoginBean loginBean = (LoginBean) request.getSession().getAttribute("loginInfo");
+        loginBean = (LoginBean) request.getSession().getAttribute("loginInfo");
         userName = loginBean.getUsername();
 
         performanceWeight = Float.parseFloat(request.getParameter("performanceWeight"));
         traditionalWeight = Float.parseFloat(request.getParameter("traditionalWeight"));
 
+        studentList = new ArrayList<StudentDataRecord>();
         addCourseManualBean = (AddCourseManualBean) request.getSession().getAttribute("sessionAddCourseManualBean");
-        for (int i = 1; i < ((Integer.parseInt(addCourseManualBean.getNumberOfStudents()) + 1)); i++) {
+
+        int numberOfStudents = Integer.parseInt(addCourseManualBean.getNumberOfStudents());
+        for (int i = 1; i <= numberOfStudents; i++) {
             StudentDataRecord record = new StudentDataRecord();
             record.setStudentFirstName(request.getParameter("studentFirstName_" + i).replace("" + '"', "").replace(";", ""));
             record.setStudentLastName(request.getParameter("studentLastName_" + i).replace("" + '"', "").replace(";", ""));

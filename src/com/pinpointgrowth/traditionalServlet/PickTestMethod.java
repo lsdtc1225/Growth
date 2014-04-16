@@ -30,6 +30,8 @@ public class PickTestMethod extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
     private String userName;
+    private LoginBean loginBean;
+    private int cID;
     
     private int getTeacherID() throws SQLException, ClassNotFoundException {
         Class.forName(Constants.JDBC_DRIVER_CLASS);
@@ -44,7 +46,7 @@ public class PickTestMethod extends HttpServlet {
         return teacherID;
     }
     
-    private CourseDTO setupCourseDTO(int courseID) throws SQLException, ClassNotFoundException {
+    private CourseDTO setupCourseDTO(int cID) throws SQLException, ClassNotFoundException {
             
         Class.forName(Constants.JDBC_DRIVER_CLASS);
         Connection connection = DriverManager.getConnection(Constants.DATABASE_URL, Constants.DATABASE_USERNAME, Constants.DATABASE_PASSWORD);
@@ -52,12 +54,12 @@ public class PickTestMethod extends HttpServlet {
 
         CourseDTO courseDTO = new CourseDTO();
         int teacherID = getTeacherID();
-        ResultSet resultSet = statement.executeQuery(Constants.GET_COURSE(courseID));
+        ResultSet resultSet = statement.executeQuery(Constants.GET_COURSE(cID));
         resultSet.first();
         String courseName = resultSet.getString(resultSet.findColumn("CName"));
         String courseLength = resultSet.getString(resultSet.findColumn("CourseLength"));
         String courseTerm = resultSet.getString(resultSet.findColumn("Term"));
-        courseDTO.setCourseID(courseID);
+        courseDTO.setCourseID(cID);
         courseDTO.setCourseLength(courseLength);
         courseDTO.setTeacherID(teacherID);
         courseDTO.setTerm(courseTerm);
@@ -71,13 +73,13 @@ public class PickTestMethod extends HttpServlet {
     
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        int courseID = Integer.parseInt(request.getParameter("cID"));
+        cID = Integer.parseInt(request.getParameter("cID"));
         
-        LoginBean loginBean = (LoginBean) request.getSession().getAttribute("loginInfo");
+        loginBean = (LoginBean) request.getSession().getAttribute("loginInfo");
         userName = loginBean.getUsername();
 
         try {
-            CourseDTO courseDTO = setupCourseDTO(courseID);
+            CourseDTO courseDTO = setupCourseDTO(cID);
             CourseBean courseBean = new CourseBean();
             courseBean.setCourseDTO(courseDTO);
             request.setAttribute("courseBean", courseBean);
