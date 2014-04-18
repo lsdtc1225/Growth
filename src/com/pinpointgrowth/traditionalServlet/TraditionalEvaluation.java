@@ -579,8 +579,8 @@ public class TraditionalEvaluation extends HttpServlet {
 
         } catch (ClassNotFoundException | SQLException e){
             e.printStackTrace();
-            performancePassRate = 0;
-            studentEvaluationBean.setPerformancePassRate(0);
+            performancePassRate = (float) 0.6;
+            studentEvaluationBean.setPerformancePassRate(performancePassRate);
         }
 
         try{

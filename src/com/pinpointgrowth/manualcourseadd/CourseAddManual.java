@@ -98,7 +98,7 @@ public class CourseAddManual extends HttpServlet {
         preparedStatement.executeUpdate();
 
         connection.close();
-        statement.close();
+        preparedStatement.close();
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

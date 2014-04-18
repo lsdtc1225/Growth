@@ -266,7 +266,7 @@ public class Tier extends HttpServlet {
             }
             //double score = (double) sumOfScores / (double) oIDList.size();
 
-            double score = (double) sumeOfScores / (double) sumOfWeight;
+            double score = (double) sumOfScores / (double) sumOfWeight;
             student.setScore(score);
         }
         List<Double> tempList = new ArrayList<Double>();

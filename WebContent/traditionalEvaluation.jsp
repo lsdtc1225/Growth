@@ -25,11 +25,11 @@
             <form action="mainUserPage.jsp" method="post">
                 <table border="1">
                     <tr>
-                        <th>Performance Evaluation</th><th>First Name</th><th>Last Name</th><th>Traditional Evaluation</th>
+                        <!-- <th>Performance Evaluation</th> --><th>First Name</th><th>Last Name</th><th>Traditional Evaluation</th>
                     </tr>
                     <c:forEach var="evaluationDTO" items="${studentEvaluationBean.evaluationList}" varStatus="rowCounter">
                         <tr>
-                            <td>
+                            <!-- <td>
                                 <c:choose>
                                     <c:when test="${evaluationDTO.performancePassed}">
                                         <img src = "images/check mark.png" alt = "Check Mark" height = "20" width = "20">
@@ -38,7 +38,7 @@
                                         <img src = "images/x_mark.png" alt = "X Mark" height = "20" width = "20">
                                     </c:otherwise>
                                 </c:choose>
-                            </td>
+                            </td> -->
                             <td><c:out value="${evaluationDTO.SFName}"/></td>
                             <td><c:out value="${evaluationDTO.SLName}"/></td>
                             <td>
